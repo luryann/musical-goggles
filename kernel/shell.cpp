@@ -13,7 +13,6 @@ void Shell::PrintPrompt()
 {
     if (shouldPrint)
     {
-        //printf("C:/> ");
         printf("%sroot@NatalieTextMyAssBack%s / %s# ", Red, Blue, White);
     }    
 }
@@ -31,15 +30,13 @@ char tree[]     = "tree";
 char cat[]      = "cat";
 char lsStr[]    = "ls";
 char shutdown[] = "shutdown";
-char blank[] = "";
+char blank[]    = "";
 
 void Shell::TestCMD(char* input)
 {
     TwoStrings twoStrings;
-    for (int i = 0; input[i] != '\0'; i ++) {
+    for (int i = 0; i < 256; i++) { // assuming TwoStrings.a and b are 256-length arrays
         twoStrings.a[i] = '\0';
-    }
-    for (int i = 0; input[i] != '\0'; i ++) {
         twoStrings.b[i] = '\0';
     }
 
@@ -66,6 +63,7 @@ void Shell::TestCMD(char* input)
         uint64_t totMem = 0;
         uint64_t useMem = 0;
         uint64_t freMem = 0;
+
         for (uint64_t i = 0; i < mmap.response->entry_count; i++)
         {
             uint64_t type = mmap.response->entries[i]->type;
@@ -78,6 +76,7 @@ void Shell::TestCMD(char* input)
                 useMem += mmap.response->entries[i]->length;
             }
         }
+
         totMem = useMem + freMem;       
         printf("\n");
         printf("              _        _                      root@Nataluzz\n");
@@ -87,14 +86,12 @@ void Shell::TestCMD(char* input)
         printf(" |_| |_|\\__,_|\\__\\__,_|_|\\__,_/___/___|   Shell: NatShell (Ykthelore)\n");
         printf("                                              Memory: %i KB/%i KB\n", useMem / 1024, totMem / 1024);
         printf("                                              Resolution: %ix%i\n", buffer.width, buffer.height);
-        printf("              _        _               \n");
-        printf("  _ __   __ _| |_ __ _| |_   _ ________\n");
-        printf(" | '_ \\ / _` | __/ _` | | | | |_  /_  /\n");
-        printf(" | | | | (_| | || (_| | | |_| |/ / / / \n");
-        printf(" |_| |_|\\__,_|\\__\\__,_|_|\\__,_/___/___|\n");
         printf("\n");
     }
-    else if (mystrcmp(input, "")){}
+    else if (mystrcmp(input, ""))
+    {
+        // Do nothing for blank input
+    }
     else if (mystrcmp(input, "rm"))
     {
         printf("your 'rm' program is bad, sorry.\n");
@@ -125,15 +122,17 @@ void Shell::TestCMD(char* input)
     }
     else if (mystrcmp(input, "pob"))
     {
-        drawImage(g_picsofbread_data, buffer->width / 2 - 36,  buffer->height / 2 - 36);
+        drawImage(g_picsofbread_data, buffer->width / 2 - 36, buffer->height / 2 - 36);
     }
     else if (mystrcmp(input, "tree"))
     {
-        for (int i = 0; headers[i]->filename != "\0"; i++)
+        for (int i = 0; headers[i] != nullptr; i++)
         {
-            printf("%s\n", headers[i]->filename);
+            if (headers[i]->filename && headers[i]->filename[0] != '\0')
+            {
+                printf("%s\n", headers[i]->filename);
+            }
         }
-        
     }
     else if (mystrcmp(twoStrings.a, "cat"))
     {
