@@ -9,13 +9,24 @@ char NataluzzVer[] = "7120";
 Shell newShell;
 bool xRunning = false;
 
+// Dummy example PrintColored function -- replace with your actual implementation
+void PrintColored(const char* text, uint32_t color)
+{
+    // If you have a function to set color before printing:
+    SetTextColor(color);
+    printf("%s", text);
+    SetTextColor(0xFFFFFFFF); // Reset to white (or default)
+}
+
 void Shell::PrintPrompt()
 {
     if (shouldPrint)
     {
-        // Prompt colors: red 'root@', blue 'Nataluzz', white ' / # '
-        printf("\033[31mroot@\033[34mNataluzz\033[37m / \033[33m# \033[0m");
-    }    
+        PrintColored("root@", 0xFF0000FF);    // Red (ARGB: FF Red)
+        PrintColored("Nataluzz", 0xFF0000FF); // Blue
+        PrintColored(" / ", 0xFFFFFFFF);     // White
+        PrintColored("# ", 0xFFFFFF00);      // Yellow
+    }
 }
 
 char ver[]      = "ver";
@@ -47,7 +58,8 @@ void Shell::TestCMD(char* input)
 
     if (mystrcmp(input, "ver"))
     {
-        printf("\033[36mNataluzz version \033[33m%s\033[0m\n", NataluzzVer);
+        PrintColored("Nataluzz version ", 0xFF00FFFF); // Cyan
+        printf("%s\n", NataluzzVer);
     }
     else if (mystrcmp(input, help))
     {
@@ -80,31 +92,31 @@ void Shell::TestCMD(char* input)
         }
         totMem = useMem + freMem;
 
-        // Colors for ASCII art and system info
-        const char* c_red    = "\033[31m";
-        const char* c_green  = "\033[32m";
-        const char* c_yellow = "\033[33m";
-        const char* c_blue   = "\033[34m";
-        const char* c_magenta= "\033[35m";
-        const char* c_cyan   = "\033[36m";
-        const char* c_white  = "\033[37m";
-        const char* c_reset  = "\033[0m";
+        // Print ASCII art with color -- split lines and print with colors
+        PrintColored("\n              _        _                      ", 0xFF00FFFF); // Cyan
+        PrintColored("root@", 0xFFFF0000);    // Red
+        PrintColored("Nataluzz\n", 0xFF0000FF); // Blue
 
-        printf("\n");
-        printf("%s              _        _                      %sroot@%sNataluzz%s\n", c_cyan, c_red, c_blue, c_reset);
-        printf("%s  _ __   __ _| |_ __ _| |_   _ ________       --------------%s\n", c_cyan, c_reset);
-        printf("%s | '_ \\ / _` | __/ _` | | | | |_  /_  /        %sOS:       %sNataluzz %s%s\n", c_cyan, c_yellow, c_reset, c_green, NataluzzVer);
-        printf("%s | | | | (_| | || (_| | | |_| |/ / / /         %sKernel:    %sNataluzz %s%s\n", c_cyan, c_yellow, c_reset, c_green, NataluzzVer);
-        printf("%s |_| |_|\\__,_|\\__\\__,_|_|\\__,_/___/___|       %sShell:     %sNatShell (Ykthelore)%s\n", c_cyan, c_yellow, c_reset, c_magenta);
-        printf("                                              %sMemory:     %s%i KB / %i KB%s\n", c_yellow, c_reset, useMem / 1024, totMem / 1024, c_reset);
-        printf("                                              %sResolution: %s%ix%i%s\n", c_yellow, c_reset, buffer->width, buffer->height, c_reset);
-        printf("\n");
-        printf("%s              _        _                      %s\n", c_cyan, c_reset);
-        printf("%s  _ __   __ _| |_ __ _| |_   _ ________       %s\n", c_cyan, c_reset);
-        printf("%s | '_ \\ / _` | __/ _` | | | | |_  /_  /        %s\n", c_cyan, c_reset);
-        printf("%s | | | | (_| | || (_| | | |_| |/ / / /         %s\n", c_cyan, c_reset);
-        printf("%s |_| |_|\\__,_|\\__\\__,_|_|\\__,_/___/___|       %s\n", c_cyan, c_reset);
-        printf("\n%s", c_reset);
+        PrintColored("  _ __   __ _| |_ __ _| |_   _ ________       --------------\n", 0xFF00FFFF); // Cyan
+
+        PrintColored(" | '_ \\ / _` | __/ _` | | | | |_  /_  /        OS:       ", 0xFF00FFFF); // Cyan
+        PrintColored("Nataluzz ", 0xFF00FF00); // Green
+        printf("%s\n", NataluzzVer);
+
+        PrintColored(" | | | | (_| | || (_| | | |_| |/ / / /         Kernel:    ", 0xFF00FFFF);
+        PrintColored("Nataluzz ", 0xFF00FF00);
+        printf("%s\n", NataluzzVer);
+
+        PrintColored(" |_| |_|\\__,_|\\__\\__,_|_|\\__,_/___/___|       Shell:     ", 0xFF00FFFF);
+        PrintColored("NatShell (Ykthelore)\n", 0xFFFF00FF); // Magenta
+
+        PrintColored("                                              Memory:     ", 0xFFFFFF00); // Yellow
+        printf("%i KB / %i KB\n", useMem / 1024, totMem / 1024);
+
+        PrintColored("                                              Resolution: ", 0xFFFFFF00);
+        printf("%ix%i\n", buffer->width, buffer->height);
+
+        PrintColored("\n              _        _                      \n  _ __   __ _| |_ __ _| |_   _ ________       \n | '_ \\ / _` | __/ _` | | | | |_  /_  /        \n | | | | (_| | || (_| | | |_| |/ / / /         \n |_| |_|\\__,_|\\__\\__,_|_|\\__,_/___/___|       \n\n", 0xFF00FFFF);
     }
     else if (mystrcmp(input, ""))
     {
@@ -134,7 +146,7 @@ void Shell::TestCMD(char* input)
         yes.DrawWindow();
         no.DrawWindow();
 
-        drawRect(0, buffer->height - 40, buffer->width, 40, 0xff888888);        
+        drawRect(0, buffer->height - 40, buffer->width, 40, 0xff888888);
 
         newShell.shouldPrint = false;
     }
