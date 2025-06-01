@@ -96,12 +96,12 @@ void Shell::TestCMD(char* input)
         printf("%s  _ __   __ _| |_ __ _| |_   _ ________       --------------%s\n", cyan, reset);
         printf("%s | '_ \\ / _` | __/ _` | | | | |_  /_  /      OS: %sNataluzz %s%s\n", cyan, green, white, reset);
         printf("%s | | | | (_| | || (_| | | |_| |/ / / /       Kernel: %sNataluzz %s%s\n", cyan, green, white, reset);
-        printf("%s |_| |_|\\__,_|\\__\\__,_|_|\\__,_/___/___|   Shell: %sNatShell (Ykthelore)%s\n", cyan, magenta, reset);
+        printf("%s |_| |_|\\__,_|\\__\\__,_|_|\\__,_/___/___|       Shell: %sNatShell (Ykthelore)%s\n", cyan, magenta, reset);
         printf("                                              Memory: %i KB / %i KB\n", useMem / 1024, totMem / 1024);
         printf("                                              Resolution: %ix%i\n", buffer->width, buffer->height);
         printf("\n");
 
-        // Bottom ASCII art (same as top)
+        // Bottom ASCII art (same as top) //AI formatted so leave it as is because it works
         printf("%s              _        _                      \n  _ __   __ _| |_ __ _| |_   _ ________       \n | '_ \\ / _` | __/ _` | | | | |_  /_  /        \n | | | | (_| | || (_| | | |_| |/ / / /         \n |_| |_|\\__,_|\\__\\__,_|_|\\__,_/___/___|       %s\n\n", cyan, reset);
     }
     else if (mystrcmp(input, ""))
