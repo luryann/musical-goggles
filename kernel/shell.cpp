@@ -13,7 +13,8 @@ void Shell::PrintPrompt()
 {
     if (shouldPrint)
     {
-        printf("%sroot@Nataluzz%s / %s# ", Red, Blue, White);
+        // Prompt colors: red 'root@', blue 'Nataluzz', white ' / # '
+        printf("\033[31mroot@\033[34mNataluzz\033[37m / \033[33m# \033[0m");
     }    
 }
 
@@ -46,7 +47,7 @@ void Shell::TestCMD(char* input)
 
     if (mystrcmp(input, "ver"))
     {
-        printf("Nataluzz version %s\n", NataluzzVer);
+        printf("\033[36mNataluzz version \033[33m%s\033[0m\n", NataluzzVer);
     }
     else if (mystrcmp(input, help))
     {
@@ -79,15 +80,31 @@ void Shell::TestCMD(char* input)
         }
         totMem = useMem + freMem;
 
+        // Colors for ASCII art and system info
+        const char* c_red    = "\033[31m";
+        const char* c_green  = "\033[32m";
+        const char* c_yellow = "\033[33m";
+        const char* c_blue   = "\033[34m";
+        const char* c_magenta= "\033[35m";
+        const char* c_cyan   = "\033[36m";
+        const char* c_white  = "\033[37m";
+        const char* c_reset  = "\033[0m";
+
         printf("\n");
-        printf("              _        _                      root@Nataluzz\n");
-        printf("  _ __   __ _| |_ __ _| |_   _ ________       --------------\n");
-        printf(" | '_ \\ / _` | __/ _` | | | | |_  /_  /      OS: Nataluzz %s\n", NataluzzVer);
-        printf(" | | | | (_| | || (_| | | |_| |/ / / /        Kernel: %s\n", NataluzzVer);
-        printf(" |_| |_|\\__,_|\\__\\__,_|_|\\__,_/___/___|   Shell: NatShell (Ykthelore)\n");
-        printf("                                              Memory: %i KB/%i KB\n", useMem / 1024, totMem / 1024);
-        printf("                                              Resolution: %ix%i\n", buffer->width, buffer->height);
+        printf("%s              _        _                      %sroot@%sNataluzz%s\n", c_cyan, c_red, c_blue, c_reset);
+        printf("%s  _ __   __ _| |_ __ _| |_   _ ________       --------------%s\n", c_cyan, c_reset);
+        printf("%s | '_ \\ / _` | __/ _` | | | | |_  /_  /        %sOS:       %sNataluzz %s%s\n", c_cyan, c_yellow, c_reset, c_green, NataluzzVer);
+        printf("%s | | | | (_| | || (_| | | |_| |/ / / /         %sKernel:    %sNataluzz %s%s\n", c_cyan, c_yellow, c_reset, c_green, NataluzzVer);
+        printf("%s |_| |_|\\__,_|\\__\\__,_|_|\\__,_/___/___|       %sShell:     %sNatShell (Ykthelore)%s\n", c_cyan, c_yellow, c_reset, c_magenta);
+        printf("                                              %sMemory:     %s%i KB / %i KB%s\n", c_yellow, c_reset, useMem / 1024, totMem / 1024, c_reset);
+        printf("                                              %sResolution: %s%ix%i%s\n", c_yellow, c_reset, buffer->width, buffer->height, c_reset);
         printf("\n");
+        printf("%s              _        _                      %s\n", c_cyan, c_reset);
+        printf("%s  _ __   __ _| |_ __ _| |_   _ ________       %s\n", c_cyan, c_reset);
+        printf("%s | '_ \\ / _` | __/ _` | | | | |_  /_  /        %s\n", c_cyan, c_reset);
+        printf("%s | | | | (_| | || (_| | | |_| |/ / / /         %s\n", c_cyan, c_reset);
+        printf("%s |_| |_|\\__,_|\\__\\__,_|_|\\__,_/___/___|       %s\n", c_cyan, c_reset);
+        printf("\n%s", c_reset);
     }
     else if (mystrcmp(input, ""))
     {
@@ -123,7 +140,7 @@ void Shell::TestCMD(char* input)
     }
     else if (mystrcmp(input, "pob"))
     {
-        drawImage(g_picsofbread_data, buffer->width / 2 - 36,  buffer->height / 2 - 36);
+        drawImage(g_picsofbread_data, buffer->width / 2 - 36, buffer->height / 2 - 36);
     }
     else if (mystrcmp(input, "tree"))
     {
