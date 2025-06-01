@@ -9,23 +9,12 @@ char NataluzzVer[] = "7120";
 Shell newShell;
 bool xRunning = false;
 
-// Dummy example PrintColored function -- replace with your actual implementation
-void PrintColored(const char* text, uint32_t color)
-{
-    // If you have a function to set color before printing:
-    SetTextColor(color);
-    printf("%s", text);
-    SetTextColor(0xFFFFFFFF); // Reset to white (or default)
-}
-
 void Shell::PrintPrompt()
 {
     if (shouldPrint)
     {
-        PrintColored("root@", 0xFF0000FF);    // Red (ARGB: FF Red)
-        PrintColored("Nataluzz", 0xFF0000FF); // Blue
-        PrintColored(" / ", 0xFFFFFFFF);     // White
-        PrintColored("# ", 0xFFFFFF00);      // Yellow
+        // Plain prompt without color escape sequences
+        printf("root@Nataluzz / # ");
     }
 }
 
@@ -58,8 +47,7 @@ void Shell::TestCMD(char* input)
 
     if (mystrcmp(input, "ver"))
     {
-        PrintColored("Nataluzz version ", 0xFF00FFFF); // Cyan
-        printf("%s\n", NataluzzVer);
+        printf("Nataluzz version %s\n", NataluzzVer);
     }
     else if (mystrcmp(input, help))
     {
@@ -92,31 +80,29 @@ void Shell::TestCMD(char* input)
         }
         totMem = useMem + freMem;
 
-        // Print ASCII art with color -- split lines and print with colors
-        PrintColored("\n              _        _                      ", 0xFF00FFFF); // Cyan
-        PrintColored("root@", 0xFFFF0000);    // Red
-        PrintColored("Nataluzz\n", 0xFF0000FF); // Blue
+        // ANSI color codes for neofetch
+        const char* red     = "\033[31m";
+        const char* green   = "\033[32m";
+        const char* yellow  = "\033[33m";
+        const char* blue    = "\033[34m";
+        const char* magenta = "\033[35m";
+        const char* cyan    = "\033[36m";
+        const char* white   = "\033[37m";
+        const char* reset   = "\033[0m";
 
-        PrintColored("  _ __   __ _| |_ __ _| |_   _ ________       --------------\n", 0xFF00FFFF); // Cyan
+        // Top ASCII art
+        printf("\n");
+        printf("%s              _        _                      %sroot@%sNataluzz%s\n", cyan, red, blue, reset);
+        printf("%s  _ __   __ _| |_ __ _| |_   _ ________       --------------%s\n", cyan, reset);
+        printf("%s | '_ \\ / _` | __/ _` | | | | |_  /_  /      OS: %sNataluzz %s%s\n", cyan, green, white, reset);
+        printf("%s | | | | (_| | || (_| | | |_| |/ / / /       Kernel: %sNataluzz %s%s\n", cyan, green, white, reset);
+        printf("%s |_| |_|\\__,_|\\__\\__,_|_|\\__,_/___/___|   Shell: %sNatShell (Ykthelore)%s\n", cyan, magenta, reset);
+        printf("                                              Memory: %i KB / %i KB\n", useMem / 1024, totMem / 1024);
+        printf("                                              Resolution: %ix%i\n", buffer->width, buffer->height);
+        printf("\n");
 
-        PrintColored(" | '_ \\ / _` | __/ _` | | | | |_  /_  /        OS:       ", 0xFF00FFFF); // Cyan
-        PrintColored("Nataluzz ", 0xFF00FF00); // Green
-        printf("%s\n", NataluzzVer);
-
-        PrintColored(" | | | | (_| | || (_| | | |_| |/ / / /         Kernel:    ", 0xFF00FFFF);
-        PrintColored("Nataluzz ", 0xFF00FF00);
-        printf("%s\n", NataluzzVer);
-
-        PrintColored(" |_| |_|\\__,_|\\__\\__,_|_|\\__,_/___/___|       Shell:     ", 0xFF00FFFF);
-        PrintColored("NatShell (Ykthelore)\n", 0xFFFF00FF); // Magenta
-
-        PrintColored("                                              Memory:     ", 0xFFFFFF00); // Yellow
-        printf("%i KB / %i KB\n", useMem / 1024, totMem / 1024);
-
-        PrintColored("                                              Resolution: ", 0xFFFFFF00);
-        printf("%ix%i\n", buffer->width, buffer->height);
-
-        PrintColored("\n              _        _                      \n  _ __   __ _| |_ __ _| |_   _ ________       \n | '_ \\ / _` | __/ _` | | | | |_  /_  /        \n | | | | (_| | || (_| | | |_| |/ / / /         \n |_| |_|\\__,_|\\__\\__,_|_|\\__,_/___/___|       \n\n", 0xFF00FFFF);
+        // Bottom ASCII art (same as top)
+        printf("%s              _        _                      \n  _ __   __ _| |_ __ _| |_   _ ________       \n | '_ \\ / _` | __/ _` | | | | |_  /_  /        \n | | | | (_| | || (_| | | |_| |/ / / /         \n |_| |_|\\__,_|\\__\\__,_|_|\\__,_/___/___|       %s\n\n", cyan, reset);
     }
     else if (mystrcmp(input, ""))
     {
