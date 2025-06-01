@@ -13,7 +13,7 @@ void Shell::PrintPrompt()
 {
     if (shouldPrint)
     {
-        printf("%sroot@NatalieTextMyAssBack%s / %s# ", Red, Blue, White);
+        printf("%sroot@Nataluzz%s / %s# ", Red, Blue, White);
     }    
 }
 
@@ -35,13 +35,15 @@ char blank[]    = "";
 void Shell::TestCMD(char* input)
 {
     TwoStrings twoStrings;
-    for (int i = 0; i < 256; i++) { // assuming TwoStrings.a and b are 256-length arrays
+    for (int i = 0; input[i] != '\0'; i++) {
         twoStrings.a[i] = '\0';
+    }
+    for (int i = 0; input[i] != '\0'; i++) {
         twoStrings.b[i] = '\0';
     }
 
     twoStrings = strsplit(input, ' ');
-    
+
     if (mystrcmp(input, "ver"))
     {
         printf("Nataluzz version %s\n", NataluzzVer);
@@ -52,7 +54,7 @@ void Shell::TestCMD(char* input)
         printf("    ver:         shows the version of Nataluzz\n");
         printf("    help:        shows this menu\n");
         printf("    clear:       clears the screen\n");
-        printf("    neofetch:    only a Linux user would understand\n");
+        printf("    neofetch:    fancy system display\n");
     }
     else if (mystrcmp(input, "clear"))
     {
@@ -63,7 +65,6 @@ void Shell::TestCMD(char* input)
         uint64_t totMem = 0;
         uint64_t useMem = 0;
         uint64_t freMem = 0;
-
         for (uint64_t i = 0; i < mmap.response->entry_count; i++)
         {
             uint64_t type = mmap.response->entries[i]->type;
@@ -76,8 +77,8 @@ void Shell::TestCMD(char* input)
                 useMem += mmap.response->entries[i]->length;
             }
         }
+        totMem = useMem + freMem;
 
-        totMem = useMem + freMem;       
         printf("\n");
         printf("              _        _                      root@Nataluzz\n");
         printf("  _ __   __ _| |_ __ _| |_   _ ________       --------------\n");
@@ -85,12 +86,12 @@ void Shell::TestCMD(char* input)
         printf(" | | | | (_| | || (_| | | |_| |/ / / /        Kernel: %s\n", NataluzzVer);
         printf(" |_| |_|\\__,_|\\__\\__,_|_|\\__,_/___/___|   Shell: NatShell (Ykthelore)\n");
         printf("                                              Memory: %i KB/%i KB\n", useMem / 1024, totMem / 1024);
-        printf("                                              Resolution: %ix%i\n", buffer.width, buffer.height);
+        printf("                                              Resolution: %ix%i\n", buffer->width, buffer->height);
         printf("\n");
     }
     else if (mystrcmp(input, ""))
     {
-        // Do nothing for blank input
+        // Do nothing on empty input
     }
     else if (mystrcmp(input, "rm"))
     {
@@ -98,7 +99,7 @@ void Shell::TestCMD(char* input)
     }
     else if (mystrcmp(input, "panic"))
     {
-        Panic("user init panic");
+        Panic("User Caused Panic");
     }
     else if (mystrcmp(input, "exitx"))
     {
@@ -117,21 +118,18 @@ void Shell::TestCMD(char* input)
         no.DrawWindow();
 
         drawRect(0, buffer->height - 40, buffer->width, 40, 0xff888888);        
-    
+
         newShell.shouldPrint = false;
     }
     else if (mystrcmp(input, "pob"))
     {
-        drawImage(g_picsofbread_data, buffer->width / 2 - 36, buffer->height / 2 - 36);
+        drawImage(g_picsofbread_data, buffer->width / 2 - 36,  buffer->height / 2 - 36);
     }
     else if (mystrcmp(input, "tree"))
     {
-        for (int i = 0; headers[i] != nullptr; i++)
+        for (int i = 0; headers[i]->filename != "\0"; i++)
         {
-            if (headers[i]->filename && headers[i]->filename[0] != '\0')
-            {
-                printf("%s\n", headers[i]->filename);
-            }
+            printf("%s\n", headers[i]->filename);
         }
     }
     else if (mystrcmp(twoStrings.a, "cat"))
@@ -145,7 +143,7 @@ void Shell::TestCMD(char* input)
     else if (mystrcmp(input, "shutdown"))
     {
         Clear(0);
-        printf("shutting down now on some nonchalant type shit");
+        printf("SHUT DOWN SEQUENCE INITIATED");
         sleep(2);
         outw(0xB004, 0x2000);
         outw(0x604, 0x2000);
