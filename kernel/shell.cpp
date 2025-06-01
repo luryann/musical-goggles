@@ -103,6 +103,7 @@ void Shell::TestCMD(char* input)
 
         // Bottom ASCII art (same as top) //AI formatted so leave it as is because it works
         printf("%s              _        _                      \n  _ __   __ _| |_ __ _| |_   _ ________       \n | '_ \\ / _` | __/ _` | | | | |_  /_  /        \n | | | | (_| | || (_| | | |_| |/ / / /         \n |_| |_|\\__,_|\\__\\__,_|_|\\__,_/___/___|       %s\n\n", cyan, reset);
+        printf("%shi guys");
     }
     else if (mystrcmp(input, ""))
     {
